@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gmail Sender</title>
+</head>
+<body>
+  <h2>📨 Gmail Email Sender</h2>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <p style="color: {{ 'green' if category == 'success' else 'red' }}">{{ message }}</p>
+    {% endfor %}
+  {% endwith %}
+
+  <form method="post" enctype="multipart/form-data">
+    <label>To: <input type="email" name="to" required></label><br>
+    <label>CC: <input type="email" name="cc"></label><br>
+    <label>BCC: <input type="email" name="bcc"></label><br>
+    <label>Subject: <input type="text" name="subject" required></label><br>
+    <label>Plain Text Body:<br>
+      <textarea name="body" rows="4" cols="50" required></textarea>
+    </label><br>
+    <label>HTML Body (optional):<br>
+      <textarea name="html" rows="4" cols="50"></textarea>
+    </label><br>
+    <label>Attachments: <input type="file" name="attachments" multiple></label><br><br>
+    <button type="submit">Send Email</button>
+  </form>
+</body>
+</html>

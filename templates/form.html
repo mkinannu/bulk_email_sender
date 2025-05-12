@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Gmail via API</title>
+</head>
+<body>
+    <h2>Send Email</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <p style="color: {% if category == 'success' %}green{% else %}red{% endif %};">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form action="/send" method="POST">
+        <label>To:</label><br>
+        <input type="email" name="to" required value="mdnannu04@gmail.com"><br><br>
+        <label>Subject:</label><br>
+        <input type="text" name="subject" required value="About Checking Mail attachment"><br><br>
+        <label>Message:</label><br>
+        <textarea name="message" rows="6" cols="40" required> This is plain text</textarea><br>
+        <textarea id="attach-html" name="attach-html" rows="6" cols="40" onchange="conHTMLpdf()"></textarea><br>
+        <textarea name="attach" id="attach" rows="6" cols="40" ></textarea><br>
+        <input type="radio" id="pdf" name="mimetype" value="pdf">
+        <label for="pdf">PDF</label>
+        <input type="radio" id="jpg" name="mimetype" value="jpg">
+        <label for="jpg">JPG</label><br>
+        <input type="text" name="filename" value="attachment">
+        <input type="submit" value="Send Email">
+    </form>
+</body>
+<script>
+  function conHTMLpdf(){
+    var html=document.getElementById('attach-html').value;
+      document.getElementById('attach').value=btoa(html)
+    
+  }
+</script>
+</html>

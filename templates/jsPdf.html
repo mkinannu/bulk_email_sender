@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send HTML via Flask</title>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js"></script>
+</head>
+<body>
+
+<h2>Submit HTML Content</h2>
+<form id="emailForm" onsubmit="handleFormSubmit(event)">
+  <label for="htmlInput">Enter HTML:</label><br>
+  <textarea id="htmlInput" style="width: 80%; height: 200px;"></textarea><br><br>
+  
+  <button type="submit">Send HTML via Email</button>
+</form>
+
+<script>
+  let sanitizedContent = ""; // This will store the sanitized HTML
+
+  function handleFormSubmit(event) {
+    // Prevent the form from submitting
+    event.preventDefault();
+
+    // Get raw HTML input from textarea
+    const rawHTML = document.getElementById("htmlInput").value;
+
+    // Sanitize the input HTML to remove any dangerous code
+    sanitizedContent = DOMPurify.sanitize(rawHTML);
+
+    // Send the sanitized content to Flask backend via AJAX
+    fetch('/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content: sanitizedContent })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert("Email sent successfully!");
+    })
+    .catch(error => {
+      console.error("Error sending email:", error);
+    });
+  }
+</script>
+
+</body>
+</html>
